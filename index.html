@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>license.info.vn – Phần mềm văn phòng cho Windows</title>
+<meta name="description" content="Bộ phần mềm tiếng Việt cho Windows: kiểm tra hóa đơn điện tử, xem hóa đơn XML, công cụ PDF và quét tài liệu tự động.">
+<link rel="icon" href="assets/InvoiceCheck.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --surface-2: #eef1f4;
+    --text: #141920;
+    --muted: #5a6371;
+    --border: #e1e5ea;
+    --accent: #0e6b5b;
+    --accent-hover: #0b5a4c;
+    --accent-ink: #ffffff;
+    --accent-soft: #e2f1ed;
+    --ok: #1e9a53;
+    --warn: #c98d00;
+    --err: #d14343;
+    --warn-row: #fff7e0;
+    --err-row: #fdecec;
+    --shadow: 0 1px 2px rgba(20, 25, 32, .05), 0 8px 24px rgba(20, 25, 32, .06);
+    --radius: 14px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1114;
+      --surface: #161a1f;
+      --surface-2: #1d2228;
+      --text: #e7eaee;
+      --muted: #9aa3ae;
+      --border: #2a3038;
+      --accent: #3dbca3;
+      --accent-hover: #55cdb5;
+      --accent-ink: #062019;
+      --accent-soft: #15302a;
+      --ok: #3cc477;
+      --warn: #e8b23a;
+      --err: #ef6b6b;
+      --warn-row: #2e2712;
+      --err-row: #321a1b;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .3);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1114;
+    --surface: #161a1f;
+    --surface-2: #1d2228;
+    --text: #e7eaee;
+    --muted: #9aa3ae;
+    --border: #2a3038;
+    --accent: #3dbca3;
+    --accent-hover: #55cdb5;
+    --accent-ink: #062019;
+    --accent-soft: #15302a;
+    --ok: #3cc477;
+    --warn: #e8b23a;
+    --err: #ef6b6b;
+    --warn-row: #2e2712;
+    --err-row: #321a1b;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .3);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  img { display: block; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+  /* Header */
+  .top {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); text-decoration: none; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: var(--accent); color: var(--accent-ink);
+    display: grid; place-items: center; font-size: 15px;
+  }
+  .nav { display: flex; gap: 4px; align-items: center; }
+  .nav a { color: var(--muted); text-decoration: none; font-size: 15px; padding: 6px 10px; border-radius: 8px; }
+  .nav a:hover { color: var(--text); background: var(--surface-2); }
+  .theme-btn {
+    border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    width: 36px; height: 36px; border-radius: 9px; cursor: pointer; display: grid; place-items: center;
+  }
+  @media (max-width: 720px) { .nav a { display: none; } }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 18px; border-radius: 10px;
+    font: inherit; font-weight: 600; font-size: 15px;
+    text-decoration: none; cursor: pointer; border: 1px solid transparent;
+    transition: background .15s, border-color .15s;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
+  .btn-ghost:hover { border-color: var(--muted); }
+  .btn small { font-weight: 400; opacity: .75; }
+
+  /* Hero */
+  .hero { padding: 72px 0 56px; }
+  .hero .wrap { display: grid; grid-template-columns: 1fr 1.05fr; gap: 48px; align-items: center; }
+  .eyebrow {
+    display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .02em;
+    color: var(--accent); background: var(--accent-soft);
+    padding: 4px 10px; border-radius: 999px; margin-bottom: 18px;
+  }
+  h1 { font-size: clamp(32px, 5vw, 48px); line-height: 1.15; margin: 0 0 18px; letter-spacing: -.02em; text-wrap: balance; }
+  .lead { font-size: 18px; color: var(--muted); margin: 0 0 28px; max-width: 34em; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  @media (max-width: 900px) {
+    .hero { padding: 48px 0 40px; }
+    .hero .wrap { grid-template-columns: 1fr; gap: 36px; }
+  }
+
+  /* Mock window */
+  .win {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; box-shadow: var(--shadow); overflow: hidden;
+    font-size: 13px;
+  }
+  .win-bar { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-bottom: 1px solid var(--border); background: var(--surface-2); }
+  .win-bar img { width: 16px; height: 16px; }
+  .win-bar span { font-weight: 600; font-size: 12.5px; }
+  .win-dots { margin-left: auto; display: flex; gap: 14px; color: var(--muted); font-size: 12px; }
+  .win-tools { display: flex; gap: 6px; padding: 10px 12px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .win-tools b { font-weight: 500; font-size: 12px; padding: 4px 9px; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); }
+  .win-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .win-table th, .win-table td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .win-table th { font-weight: 600; color: var(--muted); font-size: 12px; }
+  .win-table td.num, .win-table th.num { text-align: right; }
+  .win-table tr.warn td { background: var(--warn-row); }
+  .win-table tr.err td { background: var(--err-row); }
+  .win-table .clip { max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; }
+  .dot.ok { background: var(--ok); } .dot.warn { background: var(--warn); } .dot.err { background: var(--err); }
+  .win-foot { padding: 9px 12px; color: var(--muted); font-size: 12px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .win-scroll { overflow-x: auto; }
+
+  /* Sections */
+  section.block { padding: 64px 0; }
+  .sec-head { max-width: 640px; margin-bottom: 36px; }
+  h2 { font-size: clamp(26px, 3.4vw, 34px); line-height: 1.2; margin: 0 0 10px; letter-spacing: -.015em; }
+  .sec-head p { color: var(--muted); margin: 0; font-size: 17px; }
+
+  /* Products */
+  .products { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 860px) { .products { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 26px; display: flex; flex-direction: column; gap: 16px;
+  }
+  .card-head { display: flex; gap: 14px; align-items: center; }
+  .card-icon {
+    width: 52px; height: 52px; border-radius: 12px; flex: none;
+    background: var(--surface-2); display: grid; place-items: center;
+  }
+  .card-icon img { width: 36px; height: 36px; }
+  .card-icon svg { width: 30px; height: 30px; color: var(--accent); }
+  .card h3 { margin: 0; font-size: 20px; line-height: 1.25; }
+  .card .tag { margin: 2px 0 0; color: var(--muted); font-size: 14.5px; }
+  .card ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; }
+  .card li { position: relative; padding-left: 26px; font-size: 15px; }
+  .card li::before {
+    content: ""; position: absolute; left: 2px; top: 6px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--accent-soft);
+    box-shadow: inset 0 0 0 4px var(--accent-soft), inset 0 0 0 7px var(--accent);
+  }
+  .req { font-size: 13.5px; color: var(--muted); border-top: 1px dashed var(--border); padding-top: 14px; margin-top: auto; }
+  .dl { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  /* Why */
+  .why { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  @media (max-width: 900px) { .why { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .why { grid-template-columns: 1fr; } }
+  .why div { padding: 22px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); }
+  .why h4 { margin: 12px 0 6px; font-size: 16.5px; }
+  .why p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .why svg { width: 26px; height: 26px; color: var(--accent); }
+
+  /* Steps */
+  .steps { counter-reset: s; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0; margin: 0; }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+  .steps li { list-style: none; counter-increment: s; padding: 22px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+  .steps li::before {
+    content: counter(s); display: grid; place-items: center;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14px; margin-bottom: 12px;
+  }
+  .steps b { display: block; margin-bottom: 4px; }
+  .steps span { color: var(--muted); font-size: 14.5px; }
+
+  /* Donate */
+  .donate {
+    display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 40px;
+  }
+  .donate img { width: 220px; height: auto; border-radius: 14px; border: 1px solid var(--border); background: #fff; }
+  .donate p { color: var(--muted); margin: 0 0 8px; }
+  @media (max-width: 720px) {
+    .donate { grid-template-columns: 1fr; padding: 26px; gap: 24px; }
+    .donate img { width: 200px; margin: 0 auto; }
+  }
+
+  footer { padding: 36px 0 48px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--border); margin-top: 32px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <span class="brand-mark" aria-hidden="true">L</span>
+      license.info.vn
+    </a>
+    <nav class="nav">
+      <a href="#phan-mem">Phần mềm</a>
+      <a href="#uu-diem">Ưu điểm</a>
+      <a href="#cai-dat">Cài đặt</a>
+      <a href="#ung-ho">Ủng hộ</a>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Đổi giao diện sáng/tối">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Dành cho kế toán &amp; văn phòng</span>
+        <h1>Phần mềm hóa đơn, PDF và quét tài liệu cho Windows</h1>
+        <p class="lead">Kiểm tra hóa đơn điện tử, xem file XML, xử lý PDF và quét giấy tờ tự đặt tên. Giao diện tiếng Việt, chạy ngay trên Windows 10/11.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#phan-mem">Xem các phần mềm</a>
+          <a class="btn btn-ghost" href="https://github.com/Huy991/license.info.vn/releases/latest/download/InvoiceCheck-Setup.exe" download>Tải InvoiceCheck</a>
+        </div>
+      </div>
+
+      <div class="win" aria-label="Minh họa giao diện InvoiceCheck">
+        <div class="win-bar">
+          <img src="assets/InvoiceCheck.ico" alt="">
+          <span>InvoiceCheck – Kiểm tra hóa đơn điện tử</span>
+          <div class="win-dots" aria-hidden="true"><i>–</i><i>□</i><i>✕</i></div>
+        </div>
+        <div class="win-tools" aria-hidden="true">
+          <b>Thêm file…</b><b>Thêm thư mục…</b><b>Cổng thuế ▾</b><b>Xuất Excel…</b>
+        </div>
+        <div class="win-scroll">
+          <table class="win-table">
+            <thead>
+              <tr><th></th><th>Ký hiệu</th><th>Số</th><th>Người bán</th><th class="num">Tổng thanh toán</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="dot ok"></span></td><td>1C26TAA</td><td>00001284</td><td class="clip">Cty TNHH Thương mại An Phát</td><td class="num">12.650.000</td></tr>
+              <tr><td><span class="dot ok"></span></td><td>1C26TBM</td><td>00000317</td><td class="clip">Cty CP Dịch vụ Minh Long</td><td class="num">3.240.000</td></tr>
+              <tr class="warn"><td><span class="dot warn"></span></td><td>1C26THN</td><td>00002051</td><td class="clip">Cty TNHH Vật tư Hưng Thịnh</td><td class="num">8.800.000</td></tr>
+              <tr><td><span class="dot ok"></span></td><td>1K26TVP</td><td>00000098</td><td class="clip">Cty TNHH In ấn Sao Mai</td><td class="num">1.980.000</td></tr>
+              <tr class="err"><td><span class="dot err"></span></td><td>1C26TXD</td><td>00000742</td><td class="clip">Cty CP Xây dựng Bình Minh</td><td class="num">45.100.000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="win-foot">
+          <span><span class="dot ok"></span> 3 đạt</span>
+          <span><span class="dot warn"></span> 1 cảnh báo: thuế suất không khớp</span>
+          <span><span class="dot err"></span> 1 lỗi: PDF khác XML</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="phan-mem">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Bốn phần mềm, một mục đích: bớt việc tay</h2>
+        <p>Kéo thả file hoặc cả thư mục vào cửa sổ là dùng, không phải cài thêm thư viện.</p>
+      </div>
+
+      <div class="products">
+        <article class="card">
+          <div class="card-head">
+            <div class="card-icon"><img src="assets/InvoiceCheck.ico" alt=""></div>
+            <div>
+              <h3>InvoiceCheck</h3>
+              <p class="tag">Kiểm tra hóa đơn điện tử từ PDF và XML</p>
+            </div>
+          </div>
+          <ul>
+            <li>Đọc PDF hóa đơn của mọi nhà cung cấp (VNPT, Viettel, MISA, FPT, BKAV…), cả bản scan nhờ OCR.</li>
+            <li>Đọc XML theo Thông tư 78 và kiểm tra chữ ký số ngay trên máy.</li>
+            <li>Ghép PDF với XML, phát hiện bản PDF bị sửa.</li>
+            <li>Kiểm tra MST, tiền hàng + thuế = tổng, số tiền bằng chữ, ký hiệu, ngày ký.</li>
+            <li>Tra cứu MST, tra cứu hóa đơn và tải XML gốc trên cổng thuế.</li>
+            <li>Xuất bảng kê Excel có tô màu và bộ lọc.</li>
+          </ul>
+          <p class="req">Windows 10/11 · .NET Framework 4.5 (có sẵn)</p>
+          <div class="dl">
+            <a class="btn btn-primary" href="https://github.com/Huy991/license.info.vn/releases/latest/download/InvoiceCheck-Setup.exe" download>Bộ cài <small>6,9 MB</small></a>
+            <a class="btn btn-ghost" href="https://github.com/Huy991/license.info.vn/releases/latest/download/InvoiceCheck.zip" download>Bản ZIP <small>6,8 MB</small></a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div class="card-icon"><img src="assets/InvoiceViewer.ico" alt=""></div>
+            <div>
+              <h3>InvoiceViewer</h3>
+              <p class="tag">Xem hóa đơn XML, chuyển sang PDF</p>
+            </div>
+          </div>
+          <ul>
+            <li>Mở file .xml, .zip hoặc cả thư mục; tự tách file chứa nhiều hóa đơn.</li>
+            <li>Hiển thị theo mẫu chuẩn, hoặc theo mẫu XSLT của nhà cung cấp.</li>
+            <li>Kiểm tra chữ ký số của người bán, người mua và cơ quan thuế.</li>
+            <li>Lưu PDF khổ A4 từng hóa đơn hoặc xuất hàng loạt (khoảng 1 giây/hóa đơn).</li>
+            <li>In trực tiếp, xem XML gốc dạng dễ đọc.</li>
+          </ul>
+          <p class="req">Windows 10/11 · .NET Framework 4.6.2 và Microsoft Edge (có sẵn)</p>
+          <div class="dl">
+            <a class="btn btn-primary" href="https://github.com/Huy991/license.info.vn/releases/latest/download/InvoiceViewer.exe" download>Tải về <small>119 KB</small></a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div class="card-icon"><img src="assets/PdfTool.ico" alt=""></div>
+            <div>
+              <h3>PdfTool</h3>
+              <p class="tag">Bộ công cụ PDF đầy đủ</p>
+            </div>
+          </div>
+          <ul>
+            <li>Soạn PDF bằng kéo thả: sắp xếp, xoay, xóa, tách, gộp trang giữa nhiều tài liệu.</li>
+            <li>Nén PDF, ảnh sang PDF, PDF sang ảnh.</li>
+            <li>Nhận dạng chữ (OCR) tiếng Việt và tiếng Anh.</li>
+            <li>Word, Excel, PowerPoint sang PDF; PDF sang Word.</li>
+            <li>Đánh số trang, đóng dấu chữ, đặt và gỡ mật khẩu.</li>
+          </ul>
+          <p class="req">Windows 10/11 · Chuyển đổi Office cần Microsoft Office cài sẵn</p>
+          <div class="dl">
+            <a class="btn btn-primary" href="https://github.com/Huy991/license.info.vn/releases/latest/download/PdfTool-Setup.exe" download>Bộ cài <small>37,8 MB</small></a>
+            <a class="btn btn-ghost" href="https://github.com/Huy991/license.info.vn/releases/latest/download/PdfTool.zip" download>Bản ZIP <small>37,7 MB</small></a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="8" rx="2"/><path d="M6 11V5h9l3 3v3"/><path d="M7 15h6"/><circle cx="17" cy="15" r=".8" fill="currentColor"/></svg>
+            </div>
+            <div>
+              <h3>ScanApp</h3>
+              <p class="tag">Quét tài liệu tự động, tự đặt tên file</p>
+            </div>
+          </div>
+          <ul>
+            <li>Quét từ mặt kính hoặc khay ADF, quét liên tục đến khi hết giấy.</li>
+            <li>Tự xoay trang ngược, làm thẳng trang lệch, làm trắng nền, đậm chữ.</li>
+            <li>Đặt tên file theo tiêu đề tài liệu, ví dụ <em>QUYET DINH - Ve viec bo nhiem….pdf</em>.</li>
+            <li>Nhận ra giấy đề nghị thanh toán, biên bản đối chiếu công nợ để đặt tên chi tiết.</li>
+            <li>Lưu PDF, JPG hoặc PNG, tự lưu ngay sau khi quét.</li>
+          </ul>
+          <p class="req">Windows 10/11 · Máy scan có driver WIA (đã chạy với Brother DCP-B7640DW)</p>
+          <div class="dl">
+            <a class="btn btn-primary" href="https://github.com/Huy991/license.info.vn/releases/latest/download/ScanApp.exe" download>Tải về <small>65 KB</small></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="uu-diem">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Vì sao dùng?</h2>
+      </div>
+      <div class="why">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          <h4>Xử lý trên máy</h4>
+          <p>Đọc hóa đơn, kiểm tra chữ ký số, OCR đều chạy trên máy bạn. Chỉ gửi đi khi bạn chủ động tra cứu.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16M4 12h10M4 19h7"/></svg>
+          <h4>Tiếng Việt</h4>
+          <p>Giao diện, thông báo và tên file đều bằng tiếng Việt, viết cho người làm kế toán, văn phòng.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+          <h4>Nhẹ, chạy ngay</h4>
+          <p>File chạy từ vài chục đến vài trăm KB, dùng .NET Framework có sẵn trên Windows.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>
+          <h4>Không cần quyền Admin</h4>
+          <p>Bộ cài chỉ cài cho người dùng hiện tại, có shortcut và gỡ được trong Settings → Apps.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="cai-dat">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Bắt đầu trong một phút</h2>
+      </div>
+      <ol class="steps">
+        <li><b>Tải về</b><span>Chọn bộ cài (.exe) hoặc bản ZIP ở mục Phần mềm.</span></li>
+        <li><b>Cài hoặc giải nén</b><span>Chạy bộ cài, hoặc giải nén ZIP rồi mở file .exe. Không cần quyền Admin.</span></li>
+        <li><b>Kéo thả và dùng</b><span>Kéo file hoặc cả thư mục vào cửa sổ phần mềm, kết quả hiện ngay.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block" id="ung-ho">
+    <div class="wrap">
+      <div class="donate">
+        <div>
+          <h2>Ủng hộ tác giả</h2>
+          <p>Nếu phần mềm giúp bạn tiết kiệm thời gian, bạn có thể ủng hộ để tác giả tiếp tục cập nhật và phát triển thêm tính năng.</p>
+          <p>Quét mã VietQR bằng ứng dụng ngân hàng bất kỳ.</p>
+        </div>
+        <img src="assets/donate.png" alt="Mã VietQR ủng hộ tác giả, tài khoản BIDV">
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 license.info.vn</span>
+    <span>PdfTool dùng qpdf, Tesseract (Apache 2.0) và Ghostscript (AGPL 3.0).</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var key = 'theme';
+    try { var saved = localStorage.getItem(key); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      var current = root.getAttribute('data-theme') ||
+        (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      var next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem(key, next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
